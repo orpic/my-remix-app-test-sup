@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  @apply bg-white dark:bg-gray-950;
+
+  @media (prefers-color-scheme: light) {
+    color-scheme: light;
+  }
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+
+  .custom-scrollbar-one::-webkit-scrollbar {
+    width: 1px;
+    height: 0px;
+  }
+
+  .custom-scrollbar-one::-webkit-scrollbar-track {
+    background: #010101;
+  }
+
+  .custom-scrollbar-one::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 1px; /* Adjust the border radius */
+    border: 2px solid #555; /* Add a border if needed */
+  }
+
+  .custom-scrollbar-one::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Change the background color on hover */
+  }
+}
