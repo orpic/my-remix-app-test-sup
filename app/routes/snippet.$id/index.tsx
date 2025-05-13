@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { getDb, ObjectId } from "~/db/server";
 
@@ -35,12 +36,14 @@ export default function Index() {
   return (
     <div className="flex flex-col items-center h-screen">
       <div className="mt-4">
-        <Button variant="link" className="ml-auto mr-4">
-          <a href="/">Back to Snippets</a>
+        <Button variant="link" className="mx-0 px-0">
+          <a href="/" className="px-0 flex items-center justify-center">
+            <ArrowLeft className="mr-2" />
+            Back to Snippets
+          </a>
         </Button>
         <Form method="post" id="snippet-form" className="flex flex-col">
-          <p>This is the snippet page with ID: {data.id}</p>
-          <h1 className="text-xl">{data.name}</h1>
+          <h1 className="text-xl">Name: {data.name}</h1>
           <pre className="border border-gray-300 rounded-md p-4 bg-gray-100 text-gray-800 mt-4">
             {data.code}
           </pre>
@@ -58,7 +61,7 @@ export default function Index() {
 
         {/*  */}
         <data className="mt-4">
-          <h2 className="text-lg">Eval Result:</h2>
+          <h2 className="text-lg">Execution Result:</h2>
           <pre className="border border-gray-300 rounded-md p-4 bg-gray-100 text-gray-800 mt-4">
             {actionData}
           </pre>
