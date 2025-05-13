@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -34,7 +34,22 @@ export async function action({ request }: ActionFunctionArgs) {
   return result;
 }
 
+export async function loader() {
+  const db = await getDb();
+  const collection = db.collection("snippets");
+  const snippets = await collection.find().toArray();
+  const data = snippets.map((snippet) => ({
+    id: snippet._id.toString(),
+    name: snippet.name,
+    code: snippet.code,
+  }));
+  return { data };
+}
+
 export default function Index() {
+  const data = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+
   return (
     <div className="text-2xl underline flex flex-col items-center h-screen">
       <Dialog>
@@ -72,6 +87,30 @@ export default function Index() {
           </Form>
         </DialogContent>
       </Dialog>
+      {/* list code snippets */}
+      <div>
+        {data.data.map(
+          (snippet: { id: string; name: string; code: string }) => (
+            <div
+              key={snippet.name}
+              className="border-2 border-gray-300 rounded-md p-2 my-2"
+            >
+              <h3 className="text-lg font-bold">{snippet.name}</h3>
+              <p>{snippet.code.toString()}</p>
+
+              <Button
+                variant="outline"
+                className="mt-2"
+                onClick={() => {
+                  navigate(`/snippet/${snippet.id}`);
+                }}
+              >
+                View
+              </Button>
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 }
