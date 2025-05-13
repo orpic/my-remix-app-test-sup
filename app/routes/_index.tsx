@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import {
@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import TextareaAutosize from "react-textarea-autosize";
+import { getDb } from "~/db/server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,6 +18,21 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
+
+export async function action({ request }: ActionFunctionArgs) {
+  const body = await request.formData();
+  const name = body.get("name");
+  const code = body.get("code");
+
+  const db = await getDb();
+  const collection = db.collection("snippets");
+  const result = await collection.insertOne({
+    name,
+    code,
+  });
+
+  return result;
+}
 
 export default function Index() {
   return (
