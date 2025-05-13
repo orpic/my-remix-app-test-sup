@@ -1,16 +1,15 @@
 import type { MetaFunction } from "@remix-run/node";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "~/components/ui/alert-dialog";
+import { Form } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import TextareaAutosize from "react-textarea-autosize";
 
 export const meta: MetaFunction = () => {
   return [
@@ -21,28 +20,42 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="text-2xl underline flex flex-col items-center justify-center h-screen">
-      <div>
-        <h1 className="underline text-2xl">Hello World</h1>
-      </div>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button variant="outline">Show Dialog</Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Continue</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+    <div className="text-2xl underline flex flex-col items-center h-screen">
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline" className="mt-4 ml-auto mr-4">
+            Add Code Snippet
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <Form method="post">
+            <DialogHeader>
+              <DialogTitle>Add code snippet</DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col my-2">
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                id="name"
+                className="border-2 border-gray-300 rounded-md p-2"
+              />
+              <TextareaAutosize
+                name="code"
+                placeholder="Code"
+                id="code"
+                minRows={3}
+                maxRows={5}
+                className="resize-none border-2 border-gray-300 rounded-md p-2 mt-2"
+              />
+            </div>
+
+            <DialogFooter>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
