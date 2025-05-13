@@ -1,5 +1,11 @@
 import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Form, useLoaderData, useNavigate } from "@remix-run/react";
+import {
+  Form,
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+} from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -11,6 +17,7 @@ import {
 } from "~/components/ui/dialog";
 import TextareaAutosize from "react-textarea-autosize";
 import { getDb } from "~/db/server";
+import { useEffect, useState } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,8 +37,8 @@ export async function action({ request }: ActionFunctionArgs) {
     name,
     code,
   });
-
-  return result;
+  console.log("Inserted ID:", result.insertedId);
+  return redirect("/");
 }
 
 export async function loader() {
@@ -49,10 +56,18 @@ export async function loader() {
 export default function Index() {
   const data = useLoaderData<typeof loader>();
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (navigation.state === "submitting") {
+      setIsDialogOpen(false);
+    }
+  }, [navigation.state]);
 
   return (
     <div className="text-2xl underline flex flex-col items-center h-screen">
-      <Dialog>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" className="mt-4 ml-auto mr-4">
             Add Code Snippet
