@@ -14,6 +14,53 @@ import { renderToPipeableStream } from "react-dom/server";
 
 const ABORT_DELAY = 5_000;
 
+function executeSnippet() {
+  while(true) {
+    const dbCollection = "users";
+    // get all snippets which are status: pending
+    const pendingSnippets = dbCollection.findAndUpdate({ time_ofExecition: lte: cuurenttime   MousePointerSquareDashed, satus: pending },  {status: "pricessing"});
+
+    // frewquency: daily | weekly | monthly
+    // time_of_execition: date, time
+    // status: pending | "processing" | executed
+
+
+    // time of execution - 10:40
+    // status: pending
+    // frequency: daily
+
+
+
+    // fter running 
+    // status: executed
+    
+    // after execution
+    // time_of_execution: 10:40 + 24
+
+
+    // list of snippet 
+    // .map(())
+
+
+    // 10 workers
+    // 
+
+
+
+
+    // server restart at 11:00
+
+    // 10:45 < 11:05
+
+    // executing snippers
+    
+
+    // check for time of execution
+    // if the time is in the range +- 5 minutes, execute the snippet
+    
+  }
+}
+
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,
